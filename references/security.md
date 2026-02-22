@@ -52,12 +52,48 @@ Access control before intelligence — securing who can access the bot, where it
 - **Vector**: Second command injection path, chainable with CVE-2026-25253 for one-click RCE.
 - **Remediation**: Update to >= 2026.1.29. Enable sandbox mode. Audit tool policies.
 
+### 2026.2.12 — Mass Security Patch (40+ Vulnerabilities)
+
+- **Affected**: All versions before 2026.2.12
+- **Scope**: Path traversal in media handling, plugin loading, and config includes; SSRF enforcement gaps; Discord moderation privilege escalation; ACP session management DoS; plugin discovery unsafe candidates; webhook ingress replay attacks (Feishu/Zalo)
+- **Remediation**: Update to >= 2026.2.12.
+
+### 2026.2.15+ — Sandbox & Supply Chain Hardening
+
+- SHA-256 replaces SHA-1 for sandbox config hashing
+- Telegram bot tokens redacted from logs
+- Dangerous Docker configs blocked (bind mounts, host networking)
+- Gateway status responses redact sensitive details for non-admin clients
+- LINE channel requires both token and secret present
+- Download installer restricted to skill directories
+- Git pre-commit hook hardened against option injection
+
+### 2026.2.17+ — SSRF & Remote Hardening
+
+- SSRF protection extended to ISATAP IPv4 transition addresses
+- Strict SSH host-key verification for iMessage remote attachment SCP handling
+- Feishu temp-file path traversal fix (UUID-based names)
+- Unsigned Claude thinking blocks preserved as plain text during transcript sanitization
+
+### 2026.2.19 — Browser & Control Plane Hardening
+
+- Browser relay requires gateway-token auth on both `/extension` and `/cdp` endpoints
+- Sensitive headers (Authorization, Proxy-Authorization, Cookie) stripped on cross-origin redirects
+- SSRF enforcement for IPv4 dotted-decimal literals (blocking octal/hex/short forms)
+- Discord moderation action privilege escalation prevention
+- ACP session DoS hardening (duplicate refresh, idle reaping, rate limiting)
+- Plugin discovery hardening blocking unsafe candidates and world-writable paths
+- Webhook ingress security for Feishu/Zalo (token preconditions, replay dedupe)
+- Control-plane write RPC rate limiting (3 req/min per device+IP)
+- Path traversal protections in media handling, plugin loading, and config includes
+
 ### Audit Check: Version Vulnerability
 
 ```bash
 openclaw --version
-# Ensure >= 2026.1.29 (CVE patches)
-# Recommended: >= 2026.2.9 (latest with safety scanner)
+# Ensure >= 2026.2.19 (all security patches)
+# Minimum: >= 2026.2.12 (mass security patch)
+# Critical minimum: >= 2026.1.29 (original CVE patches)
 ```
 
 ## OWASP Agentic Top 10 Mapping
@@ -90,7 +126,7 @@ Auto-fix applies:
 
 ### Audit Checklist (Priority Order)
 
-1. **Version check** — ensure >= 2026.1.29 (CVE patches), recommend >= 2026.2.9
+1. **Version check** — ensure >= 2026.2.12 (mass patch), recommend >= 2026.2.19
 2. Lock open surfaces with tools enabled (pairing, allowlists, tool policies)
 3. Fix public network exposure (LAN binds, Funnel without auth, weak tokens)
 4. Secure browser control remote exposure (tailnet-only, intentional pairing)
@@ -161,7 +197,8 @@ Security recommendations:
 - Treat browser downloads as untrusted input; use isolated directory
 - Keep Gateway and node hosts tailnet-only; avoid LAN/public relay exposure
 - Chrome extension relay mode can take over existing Chrome tabs — equivalent to operator access
-- Config: `browser.enabled`, `browser.evaluateEnabled`, `browser.profiles`
+- **v2026.2.19**: Browser relay (`/extension`, `/cdp`) now requires gateway-token auth — update clients after upgrading
+- Config: `browser.enabled`, `browser.evaluateEnabled`, `browser.ssrfPolicy`, `browser.extraArgs`, `browser.profiles`
 
 ## Control UI Security
 
@@ -193,6 +230,7 @@ Security recommendations:
 - Restart Gateway after changes
 - npm-installed plugins: use pinned exact versions; inspect unpacked code
 - **npm lifecycle scripts can execute during install** — security risk (supply chain vector)
+- **v2026.2.19**: Plugin discovery now blocks unsafe candidates and world-writable paths
 - Config: `plugins.enabled`, `plugins.allow`, `plugins.deny`
 
 ## Skill Supply Chain Security

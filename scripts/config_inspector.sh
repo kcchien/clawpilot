@@ -52,28 +52,28 @@ CONFIG=$(cat "$CONFIG_FILE")
 # Supports both quoted and unquoted keys.
 extract() {
   local val
-  val=$(echo "$CONFIG" | grep -oE "\"?$1\"?\s*:\s*\"[^\"]*\"" | head -1 | grep -oE '"[^"]*"$' | tr -d '"')
+  val=$(echo "$CONFIG" | grep -oE "\"?$1\"?\s*:\s*\"[^\"]*\"" | head -1 | grep -oE '"[^"]*"$' | tr -d '"' || true)
   echo "$val"
 }
 
 extract_bool() {
-  echo "$CONFIG" | grep -oE "\"?$1\"?\s*:\s*(true|false)" | head -1 | grep -oE '(true|false)'
+  echo "$CONFIG" | grep -oE "\"?$1\"?\s*:\s*(true|false)" | head -1 | grep -oE '(true|false)' || true
 }
 
 extract_num() {
-  echo "$CONFIG" | grep -oE "\"?$1\"?\s*:\s*[0-9]+" | head -1 | grep -oE '[0-9]+$'
+  echo "$CONFIG" | grep -oE "\"?$1\"?\s*:\s*[0-9]+" | head -1 | grep -oE '[0-9]+$' || true
 }
 
 # Context-aware extract: search for a key within N lines after a parent key
 # Usage: extract_under "parent_key" "child_key" [lines_after]
 extract_under() {
   local parent="$1" child="$2" lines="${3:-10}"
-  echo "$CONFIG" | grep -A "$lines" "\"?${parent}\"?\s*:" | grep -oE "\"?${child}\"?\s*:\s*\"[^\"]*\"" | head -1 | grep -oE '"[^"]*"$' | tr -d '"'
+  echo "$CONFIG" | grep -A "$lines" "\"?${parent}\"?\s*:" | grep -oE "\"?${child}\"?\s*:\s*\"[^\"]*\"" | head -1 | grep -oE '"[^"]*"$' | tr -d '"' || true
 }
 
 extract_bool_under() {
   local parent="$1" child="$2" lines="${3:-10}"
-  echo "$CONFIG" | grep -A "$lines" "\"?${parent}\"?\s*:" | grep -oE "\"?${child}\"?\s*:\s*(true|false)" | head -1 | grep -oE '(true|false)'
+  echo "$CONFIG" | grep -A "$lines" "\"?${parent}\"?\s*:" | grep -oE "\"?${child}\"?\s*:\s*(true|false)" | head -1 | grep -oE '(true|false)' || true
 }
 
 # --- Gateway ---
@@ -81,7 +81,7 @@ inspect_gateway() {
   header "Gateway Configuration"
 
   local bind=$(extract_under "gateway" "bind")
-  local port=$(echo "$CONFIG" | grep -A 10 "\"?gateway\"?\s*:" | grep -oE "\"?port\"?\s*:\s*[0-9]+" | head -1 | grep -oE '[0-9]+$')
+  local port=$(echo "$CONFIG" | grep -A 10 "\"?gateway\"?\s*:" | grep -oE "\"?port\"?\s*:\s*[0-9]+" | head -1 | grep -oE '[0-9]+$' || true)
   local auth_mode=$(extract_under "auth" "mode" 5)
   local mode=$(extract_under "gateway" "mode")
 
@@ -117,7 +117,7 @@ inspect_channels() {
   header "Channel Configuration"
 
   # List all channels found in config
-  local channels=$(echo "$CONFIG" | grep -oE '"(whatsapp|telegram|discord|slack|imessage|signal|googlechat|msteams|mattermost|line|matrix|feishu|zalo|zalouser)"\s*:' | tr -d '":' | tr -d ' ')
+  local channels=$(echo "$CONFIG" | grep -oE '"(whatsapp|telegram|discord|slack|imessage|signal|googlechat|msteams|mattermost|line|matrix|feishu|zalo|zalouser)"\s*:' | tr -d '":' | tr -d ' ' || true)
 
   if [[ -z "$channels" ]]; then
     blue "  ℹ No channels explicitly configured"
@@ -130,7 +130,7 @@ inspect_channels() {
 
     # DM policy
     # Search within channel block (simplified — looks for dmPolicy near channel name)
-    local dm_policy=$(echo "$CONFIG" | grep -A 20 "\"${ch}\"" | grep -oE '"dmPolicy"\s*:\s*"[^"]*"' | head -1 | grep -oE '"[^"]*"$' | tr -d '"')
+    local dm_policy=$(echo "$CONFIG" | grep -A 20 "\"${ch}\"" | grep -oE '"dmPolicy"\s*:\s*"[^"]*"' | head -1 | grep -oE '"[^"]*"$' | tr -d '"' || true)
 
     if [[ "$dm_policy" == "open" ]]; then
       red "    ⚠ DM policy: open — ANYONE can message this bot!"
@@ -156,7 +156,7 @@ inspect_agents() {
   header "Agent Configuration"
 
   # Sandbox
-  local sandbox_mode=$(echo "$CONFIG" | grep -oE '"mode"\s*:\s*"(off|non-main|all)"' | head -1 | grep -oE '(off|non-main|all)')
+  local sandbox_mode=$(echo "$CONFIG" | grep -oE '"mode"\s*:\s*"(off|non-main|all)"' | head -1 | grep -oE '(off|non-main|all)' || true)
   local workspace_access=$(extract "workspaceAccess")
   local max_concurrent=$(extract_num "maxConcurrent")
   local timeout=$(extract_num "timeoutSeconds")
@@ -177,7 +177,7 @@ inspect_agents() {
   fi
 
   # List agents
-  local agent_ids=$(echo "$CONFIG" | grep -oE '"id"\s*:\s*"[^"]*"' | grep -oE '"[^"]*"$' | tr -d '"')
+  local agent_ids=$(echo "$CONFIG" | grep -oE '"id"\s*:\s*"[^"]*"' | grep -oE '"[^"]*"$' | tr -d '"' || true)
   if [[ -n "$agent_ids" ]]; then
     echo ""
     echo "  Defined agents:"
@@ -200,7 +200,7 @@ inspect_agents() {
 inspect_tools() {
   header "Tool Configuration"
 
-  local tool_profile=$(echo "$CONFIG" | grep -oE '"profile"\s*:\s*"(minimal|coding|messaging|full)"' | head -1 | grep -oE '(minimal|coding|messaging|full)')
+  local tool_profile=$(echo "$CONFIG" | grep -oE '"profile"\s*:\s*"(minimal|coding|messaging|full)"' | head -1 | grep -oE '(minimal|coding|messaging|full)' || true)
   echo "  Profile: ${tool_profile:-not set}"
 
   if [[ "$tool_profile" == "full" ]]; then
@@ -230,7 +230,7 @@ inspect_tools() {
   fi
 
   # Check agent-to-agent
-  local a2a=$(echo "$CONFIG" | grep -A 3 '"agentToAgent"' | grep -oE '(true|false)' | head -1)
+  local a2a=$(echo "$CONFIG" | grep -A 3 '"agentToAgent"' | grep -oE '(true|false)' | head -1 || true)
   if [[ "$a2a" == "true" ]]; then
     yellow "  ⚠ Agent-to-agent messaging enabled"
   fi

@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="900" y2="320" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0f0f1a"/>
+      <stop offset="50%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e94560"/>
+      <stop offset="100%" stop-color="#ff6b6b"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#533483"/>
+      <stop offset="100%" stop-color="#e94560"/>
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4ecca3"/>
+      <stop offset="100%" stop-color="#36b58e"/>
+    </linearGradient>
+    <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#533483" stop-opacity="0.3"/>
+      <stop offset="30%" stop-color="#e94560" stop-opacity="0.6"/>
+      <stop offset="70%" stop-color="#e94560" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#4ecca3" stop-opacity="0.3"/>
+    </linearGradient>
+    <filter id="glowFilter">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Grid pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-opacity="0.03" stroke-width="0.5"/>
+    </pattern>
+    <!-- Dot pattern -->
+    <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="10" cy="10" r="0.5" fill="#ffffff" opacity="0.08"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="320" rx="12" fill="url(#bg)"/>
+  <rect width="900" height="320" rx="12" fill="url(#grid)"/>
+  <rect width="900" height="320" rx="12" fill="url(#dots)"/>
+
+  <!-- Decorative orbs -->
+  <circle cx="120" cy="80" r="120" fill="#533483" opacity="0.08"/>
+  <circle cx="780" cy="240" r="140" fill="#e94560" opacity="0.06"/>
+  <circle cx="450" cy="160" r="200" fill="#4ecca3" opacity="0.03"/>
+
+  <!-- Horizontal accent line -->
+  <line x1="80" y1="200" x2="820" y2="200" stroke="url(#lineGrad)" stroke-width="1"/>
+
+  <!-- ===== LEFT SIDE: Chat Platform Icons ===== -->
+
+  <!-- WhatsApp -->
+  <g transform="translate(72, 80)" opacity="0.85">
+    <rect x="-16" y="-16" width="32" height="32" rx="8" fill="#25D366" opacity="0.15"/>
+    <text x="0" y="6" text-anchor="middle" font-family="Arial, sans-serif" font-size="18">💬</text>
+    <text x="0" y="28" text-anchor="middle" font-family="'SF Pro Display', 'Inter', Arial, sans-serif" font-size="8" fill="#25D366" opacity="0.9">WhatsApp</text>
+  </g>
+
+  <!-- Telegram -->
+  <g transform="translate(72, 145)" opacity="0.85">
+    <rect x="-16" y="-16" width="32" height="32" rx="8" fill="#0088cc" opacity="0.15"/>
+    <text x="0" y="6" text-anchor="middle" font-family="Arial, sans-serif" font-size="18">✈️</text>
+    <text x="0" y="28" text-anchor="middle" font-family="'SF Pro Display', 'Inter', Arial, sans-serif" font-size="8" fill="#0088cc" opacity="0.9">Telegram</text>
+  </g>
+
+  <!-- Discord -->
+  <g transform="translate(145, 60)" opacity="0.85">
+    <rect x="-16" y="-16" width="32" height="32" rx="8" fill="#5865F2" opacity="0.15"/>
+    <text x="0" y="6" text-anchor="middle" font-family="Arial, sans-serif" font-size="18">🎮</text>
+    <text x="0" y="28" text-anchor="middle" font-family="'SF Pro Display', 'Inter', Arial, sans-serif" font-size="8" fill="#5865F2" opacity="0.9">Discord</text>
+  </g>
+
+  <!-- Slack -->
+  <g transform="translate(145, 125)" opacity="0.85">
+    <rect x="-16" y="-16" width="32" height="32" rx="8" fill="#E01E5A" opacity="0.15"/>
+    <text x="0" y="6" text-anchor="middle" font-family="Arial, sans-serif" font-size="18">📢</text>
+    <text x="0" y="28" text-anchor="middle" font-family="'SF Pro Display', 'Inter', Arial, sans-serif" font-size="8" fill="#E01E5A" opacity="0.9">Slack</text>
+  </g>
+
+  <!-- Signal -->
+  <g transform="translate(110, 190)" opacity="0.6">
+    <rect x="-12" y="-12" width="24" height="24" rx="6" fill="#3A76F0" opacity="0.15"/>
+    <text x="0" y="5" text-anchor="middle" font-family="Arial, sans-serif" font-size="13">🔒</text>
+    <text x="0" y="22" text-anchor="middle" font-family="'SF Pro Display', 'Inter', Arial, sans-serif" font-size="7" fill="#3A76F0" opacity="0.8">Signal</text>
+  </g>
+
+  <!-- LINE -->
+  <g transform="translate(60, 210)" opacity="0.5">
+    <rect x="-10" y="-10" width="20" height="20" rx="5" fill="#06C755" opacity="0.15"/>
+    <text x="0" y="4" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">🟢</text>
+    <text x="0" y="18" text-anchor="middle" font-family="'SF Pro Display', 'Inter', Arial, sans-serif" font-size="6" fill="#06C755" opacity="0.7">LINE</text>
+  </g>
+
+  <!-- iMessage -->
+  <g transform="translate(155, 185)" opacity="0.5">
+    <rect x="-10" y="-10" width="20" height="20" rx="5" fill="#34AADC" opacity="0.15"/>
+    <text x="0" y="4" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">🍎</text>
+    <text x="0" y="18" text-anchor="middle" font-family="'SF Pro Display', 'Inter', Arial, sans-serif" font-size="6" fill="#34AADC" opacity="0.7">iMessage</text>
+  </g>
+
+  <!-- +7 more label -->
+  <g transform="translate(110, 240)" opacity="0.4">
+    <text x="0" y="0" text-anchor="middle" font-family="'SF Pro Display', 'Inter', Arial, sans-serif" font-size="10" fill="#8892b0" font-style="italic">+ 7 more platforms</text>
+  </g>
+
+  <!-- ===== Connection lines (left to center) ===== -->
+  <g opacity="0.3">
+    <line x1="180" y1="80" x2="320" y2="130" stroke="#e94560" stroke-width="0.8" stroke-dasharray="4 3"/>
+    <line x1="180" y1="145" x2="320" y2="145" stroke="#e94560" stroke-width="0.8" stroke-dasharray="4 3"/>
+    <line x1="180" y1="115" x2="320" y2="138" stroke="#e94560" stroke-width="0.8" stroke-dasharray="4 3"/>
+    <line x1="180" y1="70" x2="320" y2="125" stroke="#e94560" stroke-width="0.8" stroke-dasharray="4 3"/>
+  </g>
+
+  <!-- ===== CENTER: OpenClaw Gateway ===== -->
+
+  <!-- Central hex glow -->
+  <g filter="url(#softGlow)" transform="translate(450, 120)">
+    <polygon points="0,-55 48,-27.5 48,27.5 0,55 -48,27.5 -48,-27.5" fill="none" stroke="#e94560" stroke-width="1.5" opacity="0.3"/>
+  </g>
+
+  <!-- Central hexagon -->
+  <g transform="translate(450, 120)">
+    <polygon points="0,-50 43,-25 43,25 0,50 -43,25 -43,-25" fill="#1a1a2e" stroke="#e94560" stroke-width="2" opacity="0.9"/>
+    <polygon points="0,-50 43,-25 43,25 0,50 -43,25 -43,-25" fill="#e94560" opacity="0.08"/>
+    <!-- Paw icon -->
+    <text x="0" y="8" text-anchor="middle" font-family="Arial, sans-serif" font-size="36">🐾</text>
+  </g>
+
+  <!-- Title -->
+  <text x="450" y="207" text-anchor="middle" font-family="'SF Pro Display', 'Inter', 'Segoe UI', Arial, sans-serif" font-weight="700" font-size="32" fill="#ffffff" letter-spacing="1">
+    ClawPilot
+  </text>
+  <text x="450" y="232" text-anchor="middle" font-family="'SF Pro Display', 'Inter', 'Segoe UI', Arial, sans-serif" font-weight="400" font-size="13" fill="#8892b0" letter-spacing="2">
+    YOUR OPENCLAW COPILOT
+  </text>
+
+  <!-- Shield icon (security) -->
+  <g transform="translate(450, 260)" opacity="0.7">
+    <path d="M0,-12 L10,-7 L10,3 C10,8 5,12 0,14 C-5,12 -10,8 -10,3 L-10,-7 Z" fill="none" stroke="url(#shieldGrad)" stroke-width="1.2"/>
+    <text x="0" y="4" text-anchor="middle" font-family="Arial, sans-serif" font-size="10">🛡️</text>
+  </g>
+  <text x="450" y="290" text-anchor="middle" font-family="'SF Pro Display', 'Inter', Arial, sans-serif" font-size="10" fill="#4ecca3" opacity="0.8" letter-spacing="3">
+    SECURITY-FIRST
+  </text>
+
+  <!-- ===== Connection lines (center to right) ===== -->
+  <g opacity="0.3">
+    <line x1="580" y1="130" x2="700" y2="80" stroke="#4ecca3" stroke-width="0.8" stroke-dasharray="4 3"/>
+    <line x1="580" y1="145" x2="700" y2="145" stroke="#4ecca3" stroke-width="0.8" stroke-dasharray="4 3"/>
+    <line x1="580" y1="138" x2="700" y2="115" stroke="#4ecca3" stroke-width="0.8" stroke-dasharray="4 3"/>
+  </g>
+
+  <!-- ===== RIGHT SIDE: AI Capabilities ===== -->
+
+  <!-- Security Audit -->
+  <g transform="translate(760, 70)" opacity="0.85">
+    <rect x="-50" y="-16" width="100" height="32" rx="8" fill="#4ecca3" opacity="0.1" stroke="#4ecca3" stroke-width="0.5" stroke-opacity="0.3"/>
+    <text x="-32" y="6" font-family="Arial, sans-serif" font-size="14">🔍</text>
+    <text x="-16" y="5" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#4ecca3">Security Audit</text>
+  </g>
+
+  <!-- Config Expert -->
+  <g transform="translate(760, 118)" opacity="0.85">
+    <rect x="-50" y="-16" width="100" height="32" rx="8" fill="#e94560" opacity="0.1" stroke="#e94560" stroke-width="0.5" stroke-opacity="0.3"/>
+    <text x="-32" y="6" font-family="Arial, sans-serif" font-size="14">⚙️</text>
+    <text x="-16" y="5" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#e94560">Config Expert</text>
+  </g>
+
+  <!-- Cloud Deploy -->
+  <g transform="translate(760, 166)" opacity="0.85">
+    <rect x="-50" y="-16" width="100" height="32" rx="8" fill="#533483" opacity="0.15" stroke="#a855f7" stroke-width="0.5" stroke-opacity="0.3"/>
+    <text x="-32" y="6" font-family="Arial, sans-serif" font-size="14">☁️</text>
+    <text x="-16" y="5" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#a855f7">Cloud Deploy</text>
+  </g>
+
+  <!-- Multi-Agent -->
+  <g transform="translate(760, 214)" opacity="0.7">
+    <rect x="-50" y="-16" width="100" height="32" rx="8" fill="#0088cc" opacity="0.1" stroke="#38bdf8" stroke-width="0.5" stroke-opacity="0.3"/>
+    <text x="-32" y="6" font-family="Arial, sans-serif" font-size="14">🤖</text>
+    <text x="-16" y="5" font-family="'SF Mono', 'Fira Code', monospace" font-size="10" fill="#38bdf8">Multi-Agent</text>
+  </g>
+
+  <!-- CVE Watch -->
+  <g transform="translate(760, 258)" opacity="0.55">
+    <rect x="-50" y="-14" width="100" height="28" rx="7" fill="#ff6b6b" opacity="0.08" stroke="#ff6b6b" stroke-width="0.5" stroke-opacity="0.2"/>
+    <text x="-30" y="5" font-family="Arial, sans-serif" font-size="12">🚨</text>
+    <text x="-14" y="4" font-family="'SF Mono', 'Fira Code', monospace" font-size="9" fill="#ff6b6b">CVE Watch</text>
+  </g>
+
+  <!-- Bottom border accent -->
+  <rect x="0" y="314" width="900" height="6" rx="0" fill="url(#glow)" opacity="0.6"/>
+</svg>

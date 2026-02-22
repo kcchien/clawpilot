@@ -86,10 +86,12 @@
     bind: "loopback",           // "loopback"/"lan"/"tailnet"/"custom"
     port: 18789,
     auth: {
-      mode: "token",            // "token" or "password"
+      mode: "token",            // "token", "password", or "none" (v2026.2.19+)
       token: "your-secret",
       allowTailscale: false,
     },
+    customBindHost: "0.0.0.0",  // Only valid when bind="custom" (v2026.2.19+)
+    channelHealthCheckMinutes: 5, // Strict validation (v2026.2.19+)
     trustedProxies: [],         // For reverse proxy setups
     controlUi: {
       allowInsecureAuth: false,
@@ -120,7 +122,10 @@
         local: { modelPath: "hf:..." },
         extraPaths: ["~/notes"],    // Index external Markdown dirs
       },
-      compaction: {},               // Session compaction & memory flush
+      compaction: {
+        reserveTokens: 8000,      // Tokens to reserve for response (v2026.2.19+)
+        keepRecentTokens: 4000,   // Recent tokens to keep uncompacted (v2026.2.19+)
+      },
 
       // Streaming & typing
       blockStreamingDefault: "off",    // "on"/"off"
@@ -137,6 +142,7 @@
         model: "anthropic/claude-haiku-4-5",
         maxConcurrent: 8,
         archiveAfterMinutes: 30,
+        maxSpawnDepth: 2,         // Nested subagent depth limit (v2026.2.15+)
       },
     },
     list: [
@@ -237,6 +243,8 @@ Skills are loaded from: bundled (lowest) → `~/.openclaw/skills` → `<workspac
   browser: {
     enabled: true,
     evaluateEnabled: true,
+    ssrfPolicy: "strict",       // SSRF validation policy (v2026.2.19+)
+    extraArgs: [],              // Custom Chrome launch arguments (v2026.2.17+)
     profiles: {
       "agent": { cdpUrl: "ws://..." },
     },
@@ -275,8 +283,8 @@ Skills are loaded from: bundled (lowest) → `~/.openclaw/skills` → `<workspac
     },
     exec: { backgroundMs: 10000, timeoutSec: 1800 },
     web: {
-      search: { enabled: true, maxResults: 5 },
-      fetch: { enabled: true, maxChars: 50000 },
+      search: { enabled: true, maxResults: 5, urlAllowlist: [] },  // URL allowlist (v2026.2.17+)
+      fetch: { enabled: true, maxChars: 50000, urlAllowlist: [] }, // URL allowlist (v2026.2.17+)
     },
     media: { image: { enabled: true }, audio: { enabled: true } },
     agentToAgent: { enabled: false },
@@ -387,6 +395,9 @@ Skills are loaded from: bundled (lowest) → `~/.openclaw/skills` → `<workspac
       allowFrom: ["tg:123456789"],
       groups: { "-1001234567890": { requireMention: true } },
       streamMode: "partial",          // "off"/"partial"/"block"
+      buttonStyle: true,              // Inline button styles: primary/success/danger (v2026.2.17+)
+      reactionNotifications: "off",   // "off"/"own"/"all" — user reaction events (v2026.2.17+)
+      voiceNoteTranscription: true,   // DM voice-note transcription (v2026.2.19+)
       historyLimit: 50,
       mediaMaxMb: 5,
       customCommands: [],             // Bot menu commands
@@ -429,6 +440,10 @@ Skills are loaded from: bundled (lowest) → `~/.openclaw/skills` → `<workspac
         polls: true,
         moderation: false,
       },
+      components: {                   // Components v2: interactive elements (v2026.2.15+)
+        enabled: true,
+        allowedUsers: [],             // Per-button user allowlist
+      },
     },
   },
 }
@@ -449,6 +464,10 @@ Skills are loaded from: bundled (lowest) → `~/.openclaw/skills` → `<workspac
       thread: {
         historyScope: "thread",
         inheritParent: false,
+      },
+      streaming: {                    // Native streaming via chat.startStream (v2026.2.19+)
+        enabled: false,
+        mode: "draft",              // "draft"/"live"
       },
       slashCommand: {
         enabled: true,
@@ -516,6 +535,7 @@ Skills are loaded from: bundled (lowest) → `~/.openclaw/skills` → `<workspac
       baseUrl: "$MATTERMOST_URL",
       chatmode: "oncall",             // "oncall"/"onmessage"/"onchar"
       oncharPrefixes: ["@bot", "!"],
+      emojiReactions: true,           // Emoji reactions + event notifications (v2026.2.17+)
     },
   },
 }
@@ -587,3 +607,13 @@ Max 10 nesting levels. Later includes override earlier. Sibling keys override in
 | `openclaw sessions` | Active sessions |
 | `openclaw nodes` | Agent node tree |
 | `openclaw plugins` | Plugin registry |
+| `openclaw devices` | Paired device management |
+| `openclaw devices remove <id>` | Remove paired device |
+| `openclaw devices clear --yes` | Clear all paired devices |
+| `openclaw cron add --stagger` | Staggered cron scheduling |
+| `openclaw acp` | Agent Control Protocol tools |
+| `openclaw hooks` | Manage internal agent hooks |
+| `openclaw onboard` | Interactive onboarding wizard |
+| `openclaw dashboard` | Open Control UI |
+| `openclaw dns` | DNS helpers (Tailscale + CoreDNS) |
+| `openclaw directory` | Lookup contact/group IDs |

@@ -1,7 +1,7 @@
 ---
 name: clawpilot
 description: >
-  Expert skill for OpenClaw (v2026.2.9) — self-hosted AI gateway connecting chat apps (WhatsApp, Telegram, Discord, Slack,
+  Expert skill for OpenClaw (v2026.2.19) — self-hosted AI gateway connecting chat apps (WhatsApp, Telegram, Discord, Slack,
   iMessage, Signal, LINE, Matrix, Teams, Google Chat, BlueBubbles) to AI agents. Use when user asks about:
   (1) Installing, configuring, or updating OpenClaw,
   (2) Setting up or troubleshooting chat channels (e.g. "my WhatsApp bot isn't responding"),
@@ -19,6 +19,26 @@ description: >
 ---
 
 # OpenClaw Expert Skill
+
+## Auto-Update Check (Run First)
+
+**Before any other action**, run the staleness check:
+
+```bash
+bash scripts/check_updates.sh
+```
+
+- **If `UP_TO_DATE`**: Proceed normally.
+- **If `STALE`**: The skill references may be outdated. Before proceeding with the user's task:
+  1. Fetch the latest 3-5 releases from https://github.com/openclaw/openclaw/releases
+  2. Fetch https://docs.openclaw.ai/llms.txt for doc changes
+  3. Search web for recent OpenClaw CVEs or security advisories
+  4. Compare findings against the version in SKILL.md frontmatter and `references/security.md`
+  5. **Inform the user** of any version gaps or new security issues found
+  6. If references were updated, run: `bash scripts/mark_updated.sh <latest-version>`
+  7. If no updates needed, still mark as checked: `bash scripts/mark_updated.sh <current-version>`
+
+This check uses a `.last_update_check` marker file. The threshold is 7 days (configurable via first argument).
 
 ## Security-First Principle
 
@@ -38,8 +58,12 @@ When recommending configuration, always present the secure baseline first, then 
 - **CVE-2026-25253** (CVSS 8.8): Token exfiltration via Control UI — fixed in 2026.1.29
 - **CVE-2026-24763**: Command injection — fixed in 2026.1.29
 - **CVE-2026-25157**: Command injection (chainable with 25253) — fixed in 2026.1.29
+- **2026.2.12**: Mass security patch (40+ vulnerabilities) — path traversals, SSRF, privilege escalation
+- **2026.2.15+**: SHA-256 sandbox hashing, plugin discovery hardening, ACP session DoS fixes
+- **2026.2.17+**: SSRF ISATAP protection, iMessage SSH host-key enforcement, control-plane RPC rate limiting
+- **2026.2.19**: Browser relay auth hardening (`/extension` + `/cdp` require gateway-token)
 
-**Always verify user's version is >= 2026.1.29 before any other advice.**
+**Always verify user's version is >= 2026.2.19 before any other advice.**
 
 ## Quick Reference
 
@@ -58,6 +82,10 @@ When recommending configuration, always present the secure baseline first, then 
 | Status (redacted) | `openclaw status --all` |
 | Agent management | `openclaw agents list` |
 | iOS/macOS node | `openclaw nodes` |
+| Device management | `openclaw devices remove/clear` |
+| Cron (staggered) | `openclaw cron add --stagger/--exact` |
+| Spawn subagent | `/subagents spawn` |
+| Shell completion | `openclaw completion` |
 
 Run `openclaw --help` for full command list.
 
@@ -91,10 +119,18 @@ Chat Apps --> Gateway (single process) --> AI Agent(s)
 - **Channels**: Plugin-based — WhatsApp, Telegram, Discord, Slack, iMessage, Signal, LINE, Matrix, Teams, Google Chat, Mattermost, BlueBubbles, Feishu, Zalo.
 - **Config**: `~/.openclaw/openclaw.json` (JSON5 format). `OPENCLAW_HOME` env var overrides home directory for path resolution.
 - **Nodes**: iOS alpha + macOS nodes for remote code execution via pairing.
+- **iOS**: Watch Companion (inbox UI, notification relay), Share Extension (forward content to gateway), APNs push notifications (v2026.2.19+).
 
 ## Secure Baseline
 
 Always start from the secure baseline and relax only with justification. Key defaults: `bind: "loopback"`, `dmPolicy: "pairing"`, `sandbox: { mode: "non-main" }`, `redactSensitive: "tools"`.
+
+### Breaking Changes (v2026.2.10–2026.2.19)
+
+- Gateway HTTP APIs blocked for WebChat clients (`sessions.patch`, `sessions.delete`)
+- Browser relay now requires gateway-token auth on both `/extension` and `/cdp` endpoints
+- Subagent task messages now prefixed with source context
+- Cron stagger defaults applied to recurring top-of-hour schedules
 
 Full baseline template and memory system config: see [Configuration Reference](references/configuration.md) and [Security Hardening](references/security.md).
 
@@ -183,7 +219,7 @@ Scan `.jsonl` session files for leaked credentials (AWS keys, GitHub PATs, API k
 ============================================
   1. Version & Known Vulnerabilities
 ============================================
-[PASS]     Version 2026.2.9 includes CVE-2026-25253/24763/25157 patches
+[PASS]     Version 2026.2.19 includes CVE-2026-25253/24763/25157 patches
 [PASS]     Version includes skill/plugin safety scanner (v2026.2.6+)
 ...
 ============================================

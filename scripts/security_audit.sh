@@ -203,7 +203,7 @@ header "4. Network Binding & Authentication"
 
 if [[ -f "${CONFIG_FILE}" ]]; then
   # Check gateway bind
-  bind_value=$(echo "$config_content" | grep -oE '"bind"\s*:\s*"[^"]*"' | head -1 | grep -oE '"[^"]*"$' | tr -d '"')
+  bind_value=$(echo "$config_content" | grep -oE '"bind"\s*:\s*"[^"]*"' | head -1 | grep -oE '"[^"]*"$' | tr -d '"' || true)
 
   if [[ -z "$bind_value" ]] || [[ "$bind_value" == "loopback" ]]; then
     pass "Gateway bind: loopback (local only)"
@@ -216,8 +216,8 @@ if [[ -f "${CONFIG_FILE}" ]]; then
   fi
 
   # Check auth mode
-  auth_mode=$(echo "$config_content" | grep -oE '"mode"\s*:\s*"(token|password)"' | head -1 | grep -oE '(token|password)')
-  auth_token=$(echo "$config_content" | grep -oE '"token"\s*:\s*"[^"]*"' | head -1)
+  auth_mode=$(echo "$config_content" | grep -oE '"mode"\s*:\s*"(token|password)"' | head -1 | grep -oE '(token|password)' || true)
+  auth_token=$(echo "$config_content" | grep -oE '"token"\s*:\s*"[^"]*"' | head -1 || true)
 
   if [[ -n "$auth_mode" ]]; then
     pass "Gateway auth mode: ${auth_mode}"
@@ -263,7 +263,7 @@ header "6. Sandbox & Tool Policies"
 
 if [[ -f "${CONFIG_FILE}" ]]; then
   # Sandbox mode
-  sandbox_mode=$(echo "$config_content" | grep -oE '"mode"\s*:\s*"(off|non-main|all)"' | head -1 | grep -oE '(off|non-main|all)')
+  sandbox_mode=$(echo "$config_content" | grep -oE '"mode"\s*:\s*"(off|non-main|all)"' | head -1 | grep -oE '(off|non-main|all)' || true)
   if [[ "$sandbox_mode" == "off" ]]; then
     warning "Sandbox mode: off — all sessions run unsandboxed on host."
   elif [[ "$sandbox_mode" == "non-main" ]]; then
@@ -280,7 +280,7 @@ if [[ -f "${CONFIG_FILE}" ]]; then
   fi
 
   # Check tool profile
-  tool_profile=$(echo "$config_content" | grep -oE '"profile"\s*:\s*"(minimal|coding|messaging|full)"' | head -1 | grep -oE '(minimal|coding|messaging|full)')
+  tool_profile=$(echo "$config_content" | grep -oE '"profile"\s*:\s*"(minimal|coding|messaging|full)"' | head -1 | grep -oE '(minimal|coding|messaging|full)' || true)
   if [[ "$tool_profile" == "full" ]]; then
     warning "Tool profile: full — all tools enabled. Consider restricting for untrusted channels."
   elif [[ -n "$tool_profile" ]]; then
@@ -307,7 +307,7 @@ if [[ -f "${CONFIG_FILE}" ]]; then
 fi
 
 # Check log file permissions
-LOG_DIR="/tmp/openclaw"
+LOG_DIR="${OPENCLAW_LOG_DIR:-/tmp/openclaw}"
 if [[ -d "$LOG_DIR" ]]; then
   log_perms=$(stat -f '%Lp' "$LOG_DIR" 2>/dev/null || stat -c '%a' "$LOG_DIR" 2>/dev/null || echo "???")
   if [[ "$log_perms" =~ [4567][0-7][0-7] ]] && [[ "$log_perms" != "700" ]]; then
@@ -423,7 +423,7 @@ if [[ -f "${CONFIG_FILE}" ]]; then
   fi
 
   # Check if using non-loopback bind without trusted proxies (common with nginx/caddy)
-  bind_value=$(echo "$config_content" | grep -oE '"bind"\s*:\s*"[^"]*"' | head -1 | grep -oE '"[^"]*"$' | tr -d '"')
+  bind_value=$(echo "$config_content" | grep -oE '"bind"\s*:\s*"[^"]*"' | head -1 | grep -oE '"[^"]*"$' | tr -d '"' || true)
   if [[ "$bind_value" == "lan" || "$bind_value" == "custom" || "$bind_value" == "0.0.0.0" ]]; then
     if ! echo "$config_content" | grep -q '"trustedProxies"'; then
       warning "Non-loopback bind without trustedProxies — if behind a reverse proxy, configure trustedProxies to prevent auth bypass"

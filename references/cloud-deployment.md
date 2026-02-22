@@ -40,7 +40,7 @@ git clone <openclaw-repo>
 ./docker-setup.sh
 ```
 
-Security defaults: non-root `node` user (uid 1000), no runtime package installs.
+Security defaults: non-root `node` user (uid 1000), no runtime package installs. Optional Chromium/Xvfb preinstall for browser features (v2026.2.17+).
 
 **Environment variables:**
 - `OPENCLAW_DOCKER_APT_PACKAGES` — extra system packages at build
@@ -73,6 +73,8 @@ Gateway on host; tools in Docker containers:
 ```
 
 Setup: `scripts/sandbox-setup.sh` (one-time image build).
+
+**v2026.2.15+ security**: SHA-256 replaces SHA-1 for sandbox config hashing. Dangerous Docker configs (host bind mounts, host networking) are now automatically blocked.
 
 ### Alternative Runtimes
 

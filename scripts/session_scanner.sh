@@ -118,7 +118,7 @@ for sf in "${SESSION_FILES[@]}"; do
   file_hits=0
   file_size=$(du -h "$sf" 2>/dev/null | cut -f1)
 
-  for i in "${!SECRET_LABELS[@]}"; do
+  for ((i=0; i<${#SECRET_LABELS[@]}; i++)); do
     label="${SECRET_LABELS[$i]}"
     pattern="${SECRET_REGEXES[$i]}"
     hit_count=$(grep -cE "$pattern" "$sf" 2>/dev/null || true)

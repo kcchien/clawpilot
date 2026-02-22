@@ -94,6 +94,10 @@ Per-agent override:
 - Sub-agents inherit parent agent's workspace and tool policies
 - `archiveAfterMinutes` — auto-archive idle sub-agent sessions
 - Tool restriction: `tools.subagents` for sub-agent-specific tool policies
+- **Nested subagents** (v2026.2.15+): Set `maxSpawnDepth` to allow sub-agents to spawn their own sub-agents (default: 1, max recommended: 3)
+- **Deterministic spawn** (v2026.2.17+): `/subagents spawn` command for explicit subagent activation
+- **Context overflow** (v2026.2.17+): Subagent context overflow managed via truncation/compaction to prevent crashes
+- Subagent task messages are now prefixed with source context (v2026.2.17+ breaking change)
 
 ## Heartbeat
 
@@ -217,7 +221,7 @@ Route outbound messages by channel and chat type:
 {
   session: {
     identityLinks: [
-      { whatsapp: "+886912345678", telegram: "tg:123456789" },
+      { whatsapp: "+1(555)000-0123", telegram: "tg:000000001" },
     ],
   },
 }
@@ -283,6 +287,7 @@ Login each account: `openclaw channels login`.
 - **Restrict tool access** per agent based on trust level
 - **Separate workspaces** — prevents data leakage between agents
 - **Restrict sub-agent tools** — sub-agents should have same or more restrictive policies than parent
+- **Limit spawn depth** — set `maxSpawnDepth` conservatively to prevent resource exhaustion from nested subagents
 - **Heartbeat target validation** — ensure heartbeat target is an authorized peer
 - **Agent-to-agent loop prevention** — always set `maxPingPongTurns` to prevent runaway
 - **Disable agent-to-agent** unless needed: `tools.agentToAgent.enabled: false`
