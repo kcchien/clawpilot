@@ -1,21 +1,16 @@
 ---
 name: clawpilot
 description: >
-  Expert skill for OpenClaw (v2026.2.19) — self-hosted AI gateway connecting chat apps (WhatsApp, Telegram, Discord, Slack,
-  iMessage, Signal, LINE, Matrix, Teams, Google Chat, BlueBubbles) to AI agents. Use when user asks about:
-  (1) Installing, configuring, or updating OpenClaw,
-  (2) Setting up or troubleshooting chat channels (e.g. "my WhatsApp bot isn't responding"),
-  (3) Security hardening, auditing, or checking a local OpenClaw installation,
-  (4) Inspecting openclaw.json config, prompts (SOUL.md/AGENTS.md), or session transcripts,
-  (5) Multi-agent routing, session management, agent isolation,
-  (6) Cloud deployment (AWS/GCP/Fly.io/Docker) and remote access (Tailscale/SSH),
-  (7) Upgrading or migrating OpenClaw versions,
-  (8) Discovering or installing OpenClaw skills from ClawHub,
-  (9) Any mention of "openclaw", "openclaw.json", "~/.openclaw", or gateway config.
-  Includes bundled scripts for security audit (CVE detection, OWASP/NIST mapping, supply chain scan),
-  config inspection, prompt checking, and session scanning.
-  Do NOT use for: general chatbot frameworks (Botpress, Rasa, etc.), non-OpenClaw AI gateways,
-  or generic Docker/cloud questions unrelated to OpenClaw deployment.
+  Expert skill for OpenClaw (v2026.2.19) — self-hosted AI gateway connecting chat apps
+  (WhatsApp, Telegram, Discord, Slack, iMessage, Signal, LINE, Matrix, Teams, Google Chat)
+  to AI agents. Use when user asks about: installing/configuring/updating OpenClaw,
+  setting up or troubleshooting chat channels, security hardening and auditing,
+  inspecting openclaw.json config or prompts (SOUL.md/AGENTS.md),
+  multi-agent routing and session management, cloud deployment (AWS/GCP/Fly.io/Docker),
+  upgrading versions, or discovering ClawHub skills.
+  Includes bundled scripts for security audit, config inspection, and session scanning.
+  Triggers on: "openclaw", "openclaw.json", "~/.openclaw", gateway config.
+  Not for: general chatbot frameworks, non-OpenClaw gateways, or unrelated Docker questions.
 ---
 
 # OpenClaw Expert Skill
