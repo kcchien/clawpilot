@@ -1,0 +1,3 @@
+interface:
+  display_name: "Clawpilot"
+  short_description: "Expert skill for OpenClaw (v2026.2.19) — self-hosted AI gateway"
